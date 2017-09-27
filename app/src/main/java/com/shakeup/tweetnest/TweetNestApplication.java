@@ -6,7 +6,7 @@ import android.content.Context;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowLog;
 import com.raizlabs.android.dbflow.config.FlowManager;
-import com.shakeup.tweetnest.commons.api.RestClient;
+import com.shakeup.tweetnest.commons.api.TwitterClient;
 
 /**
  * Created by Jayson on 9/27/2017.
@@ -25,7 +25,7 @@ public class TweetNestApplication extends Application {
         TweetNestApplication.context = this;
     }
 
-    public static RestClient getRestClient() {
-        return (RestClient) RestClient.getInstance(RestClient.class, TweetNestApplication.context);
+    public static TwitterClient getRestClient() {
+        return (TwitterClient) TwitterClient.getInstance(TwitterClient.class, TweetNestApplication.context);
     }
 }

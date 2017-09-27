@@ -1,14 +1,18 @@
 package com.shakeup.tweetnest.features.login;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
+import android.util.Log;
 import android.view.View;
 
 import com.codepath.oauth.OAuthLoginActionBarActivity;
 import com.shakeup.tweetnest.R;
-import com.shakeup.tweetnest.commons.api.RestClient;
+import com.shakeup.tweetnest.commons.api.TwitterClient;
+import com.shakeup.tweetnest.features.timeline.TimelineActivity;
 
-public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
+public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
+
+    private final String TAG = getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,26 +20,20 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
         setContentView(R.layout.activity_login);
     }
 
-
-    // Inflate the menu; this adds items to the action bar if it is present.
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.login, menu);
-        return true;
-    }
-
     // OAuth authenticated successfully, launch primary authenticated activity
     // i.e Display application "homepage"
     @Override
     public void onLoginSuccess() {
-        // Intent i = new Intent(this, PhotosActivity.class);
-        // startActivity(i);
+        Log.d(TAG, "onLoginSuccess: Authentication success!");
+        Intent intent = new Intent(this, TimelineActivity.class);
+        startActivity(intent);
     }
 
     // OAuth authentication flow failed, handle the error
     // i.e Display an error dialog or toast
     @Override
     public void onLoginFailure(Exception e) {
+        Log.d(TAG, "onLoginFailure: Authentication failed!");
         e.printStackTrace();
     }
 
@@ -43,6 +41,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
     // Uses the client to initiate OAuth authorization
     // This should be tied to a button used to login
     public void loginToRest(View view) {
+        Log.d(TAG, "loginToRest: Authentication initiated!");
         getClient().connect();
     }
 
