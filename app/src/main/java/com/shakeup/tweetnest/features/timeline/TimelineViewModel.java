@@ -10,6 +10,8 @@ import java.util.List;
 
 /**
  * Created by Jayson on 9/27/2017.
+ *
+ * ViewModel for the TimelineActivity
  */
 
 public class TimelineViewModel extends AndroidViewModel {
