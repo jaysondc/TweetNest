@@ -32,6 +32,9 @@ public class TimelineActivity extends AppCompatActivity {
 
     private void initRecycler() {
         mRecyclerTimeline.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerTimeline.setAdapter(new TweetAdapter(this, mTimelineViewModel.getTimeline()));
+
+        mTimelineViewModel.getTimeline().observe(this, tweets -> {
+            mRecyclerTimeline.setAdapter(new TweetAdapter(this, tweets));
+        });
     }
 }
