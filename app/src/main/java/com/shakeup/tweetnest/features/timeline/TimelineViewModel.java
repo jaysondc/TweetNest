@@ -28,7 +28,7 @@ public class TimelineViewModel extends AndroidViewModel {
 
     public LiveData<List<Tweet>> getTimeline(){
         MutableLiveData<List<Tweet>> mutableLiveData = new MutableLiveData<>();
-        mutableLiveData.setValue(mTwitterRepo.getTweets());
+        mutableLiveData.setValue(mTwitterRepo.getTimeline());
         return mutableLiveData;
     }
 }

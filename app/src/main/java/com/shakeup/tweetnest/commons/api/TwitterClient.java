@@ -50,11 +50,24 @@ public class TwitterClient extends OAuthBaseClient {
 	 *    i.e client.post(apiUrl, params, handler);
 	 */
 
-	public void getHomeTimeline(JsonHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("?nojsoncallback=1&method=flickr.interestingness.getList");
+	/**
+	 * Request the Home Timeline for the authenticated user. Callback is handled through the
+	 * {@link JsonHttpResponseHandler} argument
+	 * @param maxId Returns results with an ID less than
+	 *                 (that is, older than) or equal to the specified ID.
+	 * @param sinceId 	Returns results with an ID greater than
+	 *                     (that is, more recent than) the specified ID. There are limits to
+	 *                     the number of Tweets which can be accessed through the API. If the
+	 *                     limit of Tweets has occured since the since_id, the since_id will
+	 *                     be forced to the oldest ID available.
+	 * @param handler Handler callback that is used to handle request results.
+	 */
+	public void getHomeTimeline(Integer maxId, Integer sinceId, JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("/statuses/home_timeline");
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
-		params.put("format", "json");
+		if (maxId != null) params.put("max_id", maxId);
+		if (sinceId != null) params.put("since_id", sinceId);
 		client.get(apiUrl, params, handler);
 	}
 

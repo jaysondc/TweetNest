@@ -1,11 +1,18 @@
 package com.shakeup.tweetnest.commons.repos;
 
+import android.util.Log;
+
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.shakeup.tweetnest.TweetNestApplication;
 import com.shakeup.tweetnest.commons.api.TwitterClient;
 import com.shakeup.tweetnest.commons.models.Tweet;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
 
 
 /**
@@ -18,6 +25,9 @@ import java.util.List;
  */
 
 public class TwitterRepoSingleton {
+
+    private final String TAG = getClass().getSimpleName();
+
     private static TwitterRepoSingleton sTwitterRepo;
     private TwitterClient mTwitterClient;
 
@@ -30,6 +40,27 @@ public class TwitterRepoSingleton {
             sTwitterRepo = new TwitterRepoSingleton();
         }
         return sTwitterRepo;
+    }
+
+    /**
+     *
+     */
+    public List<Tweet> getTimeline() {
+        mTwitterClient.getHomeTimeline(null, null, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                Log.d(TAG, "onSuccess: " + response.toString());
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.d(TAG, "onFailure: " + responseString);
+            }
+        });
+
+
+        // TODO Change to retrieved data
+        return getTweets();
     }
 
     /**
