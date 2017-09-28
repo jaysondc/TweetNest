@@ -3,7 +3,6 @@ package com.shakeup.tweetnest.features.timeline;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 
 import com.shakeup.tweetnest.commons.models.Tweet;
 import com.shakeup.tweetnest.commons.repos.TwitterRepoSingleton;
@@ -27,8 +26,6 @@ public class TimelineViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Tweet>> getTimeline(){
-        MutableLiveData<List<Tweet>> mutableLiveData = new MutableLiveData<>();
-        mutableLiveData.setValue(mTwitterRepo.getTimeline());
-        return mutableLiveData;
+        return mTwitterRepo.getTimeline();
     }
 }

@@ -71,7 +71,7 @@ public class TweetAdapterDelegate extends AdapterDelegate<List<Tweet>> {
         public void bind(final Tweet tweet, int position){
             // Bind tweet to views
             textViewTweet.setText(
-                    String.format(Locale.getDefault(), "%s %d", tweet.someText, position));
+                    String.format(Locale.getDefault(), "%s %d", tweet.getText(), position));
         }
     }
 
