@@ -58,11 +58,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
-    // Dagger2
-    compile "com.google.dagger:dagger:2.9"
-    annotationProcessor "com.google.dagger:dagger-compiler:2.9"
-    provided 'javax.annotation:jsr250-api:1.0'
-
     // Adapter Delegates
     compile 'com.hannesdorfmann:adapterdelegates3:3.0.1'
 
@@ -75,7 +70,6 @@ dependencies {
     compile "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
     // DBFlow RXJava 2 support
     compile "com.github.Raizlabs.DBFlow:dbflow-rx2:${dbflow_version}"
-
 
     testCompile 'junit:junit:4.12'
 }

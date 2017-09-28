@@ -19,6 +19,7 @@ public class TweetNestApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        // Initialize DBFlow
         FlowManager.init(new FlowConfig.Builder(this).build());
         FlowLog.setMinimumLoggingLevel(FlowLog.Level.V);
 

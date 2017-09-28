@@ -54,10 +54,9 @@ public class TwitterRepoSingleton {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.d(TAG, "onFailure: " + responseString);
+                Log.d(TAG, "onFailure: " + throwable.toString());
             }
         });
-
 
         // TODO Change to retrieved data
         return getTweets();

@@ -63,7 +63,7 @@ public class TwitterClient extends OAuthBaseClient {
 	 * @param handler Handler callback that is used to handle request results.
 	 */
 	public void getHomeTimeline(Integer maxId, Integer sinceId, JsonHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("/statuses/home_timeline");
+		String apiUrl = getApiUrl("statuses/home_timeline.json");
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		if (maxId != null) params.put("max_id", maxId);
