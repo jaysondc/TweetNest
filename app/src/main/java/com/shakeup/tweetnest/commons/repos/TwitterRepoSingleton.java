@@ -47,7 +47,9 @@ public class TwitterRepoSingleton {
     }
 
     /**
-     *
+     * Obtains the users Timeline in the form of {@link LiveData} list of {@link Tweet}s.
+     * A anyone can observe the LiveData for changes and will be notified once it's populated
+     * with the request results.
      */
     public LiveData<List<Tweet>> getTimeline() {
 

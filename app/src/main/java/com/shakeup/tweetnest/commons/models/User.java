@@ -3,7 +3,7 @@ package com.shakeup.tweetnest.commons.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -223,6 +223,16 @@ public class User implements Parcelable
 
     public String getProfileImageUrl() {
         return profileImageUrl;
+    }
+
+    /**
+     * Returns the profileImageUrl for an original size image
+     * @return Url to obtain the full size profile image
+     */
+    public String getProfileImageUrlHttpsOriginal() {
+        StringBuilder sb = new StringBuilder(this.profileImageUrlHttps);
+        sb.delete(profileImageUrlHttps.length()-11, profileImageUrlHttps.length()-4);
+        return sb.toString();
     }
 
     public void setProfileImageUrl(String profileImageUrl) {

@@ -6,8 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.hannesdorfmann.adapterdelegates3.AdapterDelegate;
 import com.shakeup.tweetnest.R;
 import com.shakeup.tweetnest.commons.models.Tweet;
@@ -60,7 +62,11 @@ public class TweetAdapterDelegate extends AdapterDelegate<List<Tweet>> {
 
     public class TweetViewHolder extends RecyclerView.ViewHolder {
         final View mView;
-        @BindView(R.id.tweet_text) TextView textViewTweet;
+        @BindView(R.id.image_avatar) public ImageView avatar;
+        @BindView(R.id.text_username) public TextView username;
+        @BindView(R.id.text_handle) public TextView handle;
+        @BindView(R.id.text_time_posted) public TextView timePosted;
+        @BindView(R.id.text_body) public TextView body;
 
         public TweetViewHolder(View view) {
             super(view);
@@ -70,8 +76,16 @@ public class TweetAdapterDelegate extends AdapterDelegate<List<Tweet>> {
 
         public void bind(final Tweet tweet, int position){
             // Bind tweet to views
-            textViewTweet.setText(
+            username.setText(tweet.getUser().getName());
+            String strHandle = String.format(Locale.getDefault(), "@%s", tweet.getUser().getScreenName());
+            handle.setText(strHandle);
+            timePosted.setText("9h");
+            body.setText(
                     String.format(Locale.getDefault(), "%s %d", tweet.getText(), position));
+
+            Glide.with(itemView.getContext())
+                    .load(tweet.getUser().getProfileImageUrlHttpsOriginal())
+                    .into(avatar);
         }
     }
 
