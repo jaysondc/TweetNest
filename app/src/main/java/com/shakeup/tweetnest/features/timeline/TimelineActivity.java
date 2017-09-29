@@ -10,13 +10,16 @@ import android.support.v7.widget.RecyclerView;
 import com.shakeup.tweetnest.R;
 import com.shakeup.tweetnest.features.timeline.adapters.TweetAdapter;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TimelineActivity extends AppCompatActivity {
 
     private final String TAG = this.getClass().getSimpleName();
-    @BindView(R.id.recycler_timeline) public RecyclerView mRecyclerTimeline;
+    @BindView(R.id.recycler_timeline)
+    public RecyclerView mRecyclerTimeline;
 
     TimelineViewModel mTimelineViewModel;
 
@@ -35,9 +38,28 @@ public class TimelineActivity extends AppCompatActivity {
         mRecyclerTimeline.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerTimeline.addItemDecoration(
                 new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        mRecyclerTimeline.setAdapter(new TweetAdapter(this, new ArrayList<>()));
+        final TweetAdapter tweetAdapter = (TweetAdapter) mRecyclerTimeline.getAdapter();
 
+        // Set up Endless Scroll to load more tweets
+        mRecyclerTimeline.addOnScrollListener(new EndlessRecyclerViewScrollListener(
+                (LinearLayoutManager) mRecyclerTimeline.getLayoutManager()
+        ) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                mTimelineViewModel.loadMoreTimeline();
+            }
+        });
+
+        // Load the initial timeline and listen for further changes
         mTimelineViewModel.getTimeline().observe(this, tweets -> {
-            mRecyclerTimeline.setAdapter(new TweetAdapter(this, tweets));
+            tweetAdapter.appendTweets(tweets);
+
+            // Update maxId and sinceId in our ViewModel
+            // TODO Factor in SinceId when refreshing the page
+            if(tweets != null && tweets.size() > 0){
+                mTimelineViewModel.setMaxId(tweets.get(tweets.size()-1).getId()-1);
+            }
         });
     }
 }

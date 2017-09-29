@@ -1,6 +1,5 @@
 package com.shakeup.tweetnest.commons.repos;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
 
@@ -47,15 +46,15 @@ public class TwitterRepoSingleton {
     }
 
     /**
-     * Obtains the users Timeline in the form of {@link LiveData} list of {@link Tweet}s.
-     * A anyone can observe the LiveData for changes and will be notified once it's populated
-     * with the request results.
+     * Obtains the users Timeline and uses the list of {@link Tweet}s to populate the
+     * {@link android.arch.lifecycle.LiveData} argument.
      */
-    public LiveData<List<Tweet>> getTimeline() {
+    public void getTimeline(
+            Long maxId,
+            Long sinceId,
+            final MutableLiveData<List<Tweet>> tweets) {
 
-        final MutableLiveData<List<Tweet>> tweets = new MutableLiveData<>();
-
-        mTwitterClient.getHomeTimeline(null, null, new JsonHttpResponseHandler() {
+        mTwitterClient.getHomeTimeline(maxId, sinceId, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 Log.d(TAG, "onSuccess: " + response.toString());
@@ -81,8 +80,6 @@ public class TwitterRepoSingleton {
                 Log.d(TAG, "onFailure: " + throwable.toString());
             }
         });
-
-        return tweets;
     }
 
     /**
