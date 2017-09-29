@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.shakeup.tweetnest.commons.Utils;
 
 public class Tweet implements Parcelable
 {
@@ -131,6 +132,10 @@ public class Tweet implements Parcelable
 
     public String getCreatedAt() {
         return createdAt;
+    }
+
+    public String getCreatedAtRelative() {
+        return Utils.getRelativeTimeAgo(createdAt);
     }
 
     public void setCreatedAt(String createdAt) {

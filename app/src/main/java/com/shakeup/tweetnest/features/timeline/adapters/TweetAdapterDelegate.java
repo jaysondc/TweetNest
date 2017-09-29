@@ -79,9 +79,8 @@ public class TweetAdapterDelegate extends AdapterDelegate<List<Tweet>> {
             username.setText(tweet.getUser().getName());
             String strHandle = String.format(Locale.getDefault(), "@%s", tweet.getUser().getScreenName());
             handle.setText(strHandle);
-            timePosted.setText("9h");
-            body.setText(
-                    String.format(Locale.getDefault(), "%s %d", tweet.getText(), position));
+            timePosted.setText(String.format("- %s", tweet.getCreatedAtRelative()));
+            body.setText(tweet.getText());
 
             Glide.with(itemView.getContext())
                     .load(tweet.getUser().getProfileImageUrlHttpsOriginal())

@@ -3,6 +3,7 @@ package com.shakeup.tweetnest.features.timeline;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -32,6 +33,8 @@ public class TimelineActivity extends AppCompatActivity {
 
     private void initRecycler() {
         mRecyclerTimeline.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerTimeline.addItemDecoration(
+                new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         mTimelineViewModel.getTimeline().observe(this, tweets -> {
             mRecyclerTimeline.setAdapter(new TweetAdapter(this, tweets));
