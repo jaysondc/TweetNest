@@ -2,18 +2,18 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="300dp"
+    android:layout_height="475dp"
     android:padding="8dp">
 
     <ImageView
         android:id="@+id/compose_cancel"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:src="@android:drawable/ic_delete"
         app:layout_constraintBottom_toTopOf="@+id/compose_guideline"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@android:drawable/ic_delete" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/compose_avatar"
@@ -23,6 +23,18 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@mipmap/ic_launcher_round" />
+
+    <TextView
+        android:id="@+id/compose_handle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/compose_avatar"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintLeft_toRightOf="@id/compose_cancel"
+        app:layout_constraintRight_toLeftOf="@id/compose_avatar"
+        app:layout_constraintTop_toTopOf="@id/compose_avatar"
+        tools:text="\@shakeup__" />
 
     <android.support.constraint.Guideline
         android:id="@+id/compose_guideline"
@@ -39,6 +51,7 @@
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
+        android:hint="@string/compose_hint"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/compose_divider"
         app:layout_constraintLeft_toLeftOf="parent"

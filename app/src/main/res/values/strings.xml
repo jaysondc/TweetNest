@@ -4,4 +4,6 @@
     <string name="intent_scheme">oauth</string>
     <string name="intent_host">cprest</string>
     <string name="compose_tweet">Tweet</string>
+    <string name="tag_compose">compose_fragment_tag</string>
+    <string name="compose_hint">What\'s happening?</string>
 </resources>

@@ -11,8 +11,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.shakeup.tweetnest.R;
 import com.shakeup.tweetnest.features.timeline.TimelineViewModel;
+
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,11 +26,12 @@ import butterknife.ButterKnife;
  * Fragment for composing new tweets
  */
 
-public class ComposeTweetFragment extends DialogFragment {
+public class ComposeTweetDialogFragment extends DialogFragment {
     @BindView(R.id.compose_avatar) public ImageView mImgAvatar;
-    @BindView(R.id.compose_cancel) public Button mBtnCancel;
+    @BindView(R.id.compose_cancel) public ImageView mBtnCancel;
     @BindView(R.id.button_tweet) public Button mBtnTweet;
     @BindView(R.id.text_char_count) public TextView mCharCount;
+    @BindView(R.id.compose_handle) public TextView mHandle;
 
     public TimelineViewModel mTimelineViewModel;
 
@@ -41,8 +45,28 @@ public class ComposeTweetFragment extends DialogFragment {
         // ViewModel shared by the TimelineActivity
         mTimelineViewModel = ViewModelProviders.of(getActivity()).get(TimelineViewModel.class);
 
+        initUserViews();
+
         return view;
     }
 
+    private void initUserViews() {
+        mTimelineViewModel.getCurrentUser().observe(this, (user) -> {
 
+            mHandle.setText(String.format(Locale.getDefault(), "@%s", user.getScreenName()));
+            Glide.with(this)
+                    .load(user.getProfileImageUrlHttpsOriginal())
+                    .into(mImgAvatar);
+
+
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        int width = getResources().getDimensionPixelSize(R.dimen.popup_width);
+        int height = getResources().getDimensionPixelSize(R.dimen.popup_height);
+        getDialog().getWindow().setLayout(width, height);
+    }
 }

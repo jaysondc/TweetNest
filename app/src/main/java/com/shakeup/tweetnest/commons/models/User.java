@@ -231,7 +231,8 @@ public class User implements Parcelable
      */
     public String getProfileImageUrlHttpsOriginal() {
         StringBuilder sb = new StringBuilder(this.profileImageUrlHttps);
-        sb.delete(profileImageUrlHttps.length()-11, profileImageUrlHttps.length()-4);
+        int indexRemove = sb.indexOf("_normal");
+        sb.delete(indexRemove, indexRemove+7);
         return sb.toString();
     }
 

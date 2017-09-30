@@ -6,8 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.shakeup.tweetnest.R;
+import com.shakeup.tweetnest.features.compose.ComposeTweetDialogFragment;
 import com.shakeup.tweetnest.features.timeline.adapters.TweetAdapter;
 
 import java.util.ArrayList;
@@ -63,5 +65,10 @@ public class TimelineActivity extends AppCompatActivity {
                 mTimelineViewModel.setMaxId(tweets.get(tweets.size()-1).getId()-1);
             }
         });
+    }
+
+    public void showComposeFragment(View view) {
+        ComposeTweetDialogFragment fragment = new ComposeTweetDialogFragment();
+        fragment.show(getSupportFragmentManager(), getString(R.string.tag_compose));
     }
 }
