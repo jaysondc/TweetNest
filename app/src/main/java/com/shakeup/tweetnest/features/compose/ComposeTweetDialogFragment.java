@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,6 +33,7 @@ public class ComposeTweetDialogFragment extends DialogFragment {
     @BindView(R.id.button_tweet) public Button mBtnTweet;
     @BindView(R.id.text_char_count) public TextView mCharCount;
     @BindView(R.id.compose_handle) public TextView mHandle;
+    @BindView(R.id.edit_tweet) public EditText mEditTweet;
 
     public TimelineViewModel mTimelineViewModel;
 
@@ -47,18 +49,30 @@ public class ComposeTweetDialogFragment extends DialogFragment {
 
         initUserViews();
 
+        initCharCount();
+
+        // Set up tweet button
+        mBtnTweet.setOnClickListener( (clickedView) -> {
+            mTimelineViewModel.submitTweet(mEditTweet.getText().toString());
+            this.dismiss();
+        });
+
+        // Set up cancel button
+        mBtnCancel.setOnClickListener( (clickedView) -> this.dismiss() );
+
         return view;
+    }
+
+    private void initCharCount() {
+        // TODO implement tweet character count
     }
 
     private void initUserViews() {
         mTimelineViewModel.getCurrentUser().observe(this, (user) -> {
-
             mHandle.setText(String.format(Locale.getDefault(), "@%s", user.getScreenName()));
             Glide.with(this)
                     .load(user.getProfileImageUrlHttpsOriginal())
                     .into(mImgAvatar);
-
-
         });
     }
 

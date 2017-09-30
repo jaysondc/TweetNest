@@ -4,6 +4,7 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.util.Log;
 
 import com.shakeup.tweetnest.commons.models.Tweet;
 import com.shakeup.tweetnest.commons.models.User;
@@ -59,5 +60,10 @@ public class TimelineViewModel extends AndroidViewModel {
 
     public void setSinceId(Long mSinceId) {
         this.mSinceId = mSinceId;
+    }
+
+    public void submitTweet(String string) {
+        Log.d(TAG, "submitTweet: " + string);
+
     }
 }
