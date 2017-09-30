@@ -71,4 +71,14 @@ public class TwitterClient extends OAuthBaseClient {
 		client.get(apiUrl, params, handler);
 	}
 
+	/**
+	 * Get the current user
+	 * @param handler JSON Handler to parse the response
+	 */
+	public void getCurrentUser(JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("account/verify_credentials.json");
+
+		client.get(apiUrl, handler);
+	}
+
 }

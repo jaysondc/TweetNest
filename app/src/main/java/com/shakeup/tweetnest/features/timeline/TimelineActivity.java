@@ -31,6 +31,8 @@ public class TimelineActivity extends AppCompatActivity {
 
         mTimelineViewModel = ViewModelProviders.of(this).get(TimelineViewModel.class);
 
+        mTimelineViewModel.getCurrentUser();
+
         initRecycler();
     }
 

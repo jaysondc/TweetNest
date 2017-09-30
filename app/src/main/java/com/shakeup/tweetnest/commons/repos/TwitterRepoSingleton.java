@@ -9,8 +9,10 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.shakeup.tweetnest.TweetNestApplication;
 import com.shakeup.tweetnest.commons.api.TwitterClient;
 import com.shakeup.tweetnest.commons.models.Tweet;
+import com.shakeup.tweetnest.commons.models.User;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +36,7 @@ public class TwitterRepoSingleton {
     private static TwitterRepoSingleton sTwitterRepo;
     private TwitterClient mTwitterClient;
 
-    private TwitterRepoSingleton () {
+    private TwitterRepoSingleton() {
         mTwitterClient = TweetNestApplication.getRestClient();
     }
 
@@ -57,18 +59,18 @@ public class TwitterRepoSingleton {
         mTwitterClient.getHomeTimeline(maxId, sinceId, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                Log.d(TAG, "onSuccess: " + response.toString());
+                Log.d(TAG, "getHomeTimeline.onSuccess: " + response.toString());
 
                 List<Tweet> tweetList = new ArrayList<>();
 
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         String string = response.get(i).toString();
-                        Gson gb = new GsonBuilder().create();
-                        Tweet tweet = gb.fromJson(string, Tweet.class);
+                        Gson gson = new GsonBuilder().create();
+                        Tweet tweet = gson.fromJson(string, Tweet.class);
                         tweetList.add(tweet);
                     } catch (Exception e) {
-                        Log.d(TAG, "onSuccess: JSON Parsing Error!");
+                        Log.d(TAG, "getHomeTimeline.onSuccess: JSON parsing error!");
                     }
                 }
 
@@ -82,21 +84,20 @@ public class TwitterRepoSingleton {
         });
     }
 
-    /**
-     * Creates a dummy list of Tweets
-     *
-     * @return list of Tweets
-     */
-    public List<Tweet> getTweets() {
-        List<Tweet> tweetList = new ArrayList<>();
+    public void getCurrentUser(final MutableLiveData<User> user) {
+        mTwitterClient.getCurrentUser(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d(TAG, "getCurrentUser.onSuccess: " + response.toString());
 
-        for (int i = 0; i < 20; i++) {
-            Tweet tweet = new Tweet();
-            tweet.setText("TWEET");
-            tweetList.add(tweet);
-        }
-
-        return tweetList;
+                try {
+                    Gson gson = new GsonBuilder().create();
+                    user.setValue(gson.fromJson(response.toString(), User.class));
+                } catch (Exception e) {
+                    Log.d(TAG, "getCurrentUser.onSuccess: JSON parsing error!");
+                }
+            }
+        });
     }
 
 }

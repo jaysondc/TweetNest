@@ -6,6 +6,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
 import com.shakeup.tweetnest.commons.models.Tweet;
+import com.shakeup.tweetnest.commons.models.User;
 import com.shakeup.tweetnest.commons.repos.TwitterRepoSingleton;
 
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
 public class TimelineViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<Tweet>> tweetListLiveData = new MutableLiveData<>();
+    private MutableLiveData<User> mCurrentUser = new MutableLiveData<>();
     private Long mMaxId = null;
     private Long mSinceId = null;
 
@@ -41,6 +43,14 @@ public class TimelineViewModel extends AndroidViewModel {
 
     public void loadMoreTimeline() {
         mTwitterRepo.getTimeline(mMaxId, mSinceId, tweetListLiveData);
+    }
+
+    public LiveData<User> getCurrentUser(){
+        if (mCurrentUser.getValue() == null) {
+            mTwitterRepo.getCurrentUser(mCurrentUser);
+        }
+
+        return mCurrentUser;
     }
 
     public void setMaxId(Long mMaxId) {
