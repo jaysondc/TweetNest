@@ -38,4 +38,9 @@ public class TweetAdapter extends ListDelegationAdapter<List<Tweet>> {
         this.items.addAll(articleList);
         this.notifyItemRangeInserted(startChange, items.size()-1);
     }
+
+    public void insertPostedTweet(Tweet tweet) {
+        this.items.add(0, tweet);
+        this.notifyDataSetChanged();
+    }
 }

@@ -36,6 +36,21 @@ public class TimelineActivity extends AppCompatActivity {
         mTimelineViewModel.getCurrentUser();
 
         initRecycler();
+
+        initNewTweet();
+    }
+
+    /**
+     * Observes the ViewModel for a newly posted tweet and adds it to the timeline. Triggered
+     * when our user successfully posts a tweet.
+     */
+    private void initNewTweet() {
+        mTimelineViewModel.getPostedTweet().observe(this, (tweet -> {
+            if (tweet != null) {
+                ((TweetAdapter) mRecyclerTimeline.getAdapter()).insertPostedTweet(tweet);
+                mRecyclerTimeline.smoothScrollToPosition(0);
+            }
+        }));
     }
 
     private void initRecycler() {

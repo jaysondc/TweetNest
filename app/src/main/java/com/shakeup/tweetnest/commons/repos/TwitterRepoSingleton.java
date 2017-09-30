@@ -100,4 +100,25 @@ public class TwitterRepoSingleton {
         });
     }
 
+    public void postTweet(String tweetText, final MutableLiveData<Tweet> tweet) {
+        mTwitterClient.postTweet(tweetText, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d(TAG, "postTweet.onSuccess: " + response.toString());
+                try {
+                    Gson gson = new GsonBuilder().create();
+                    tweet.setValue(gson.fromJson(response.toString(), Tweet.class));
+                } catch (Exception e) {
+                    Log.d(TAG, "postTweet.onSuccess: JSON parsing error!");
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d(TAG, "onFailure: " + throwable.toString());
+            }
+
+        });
+    }
+
 }
