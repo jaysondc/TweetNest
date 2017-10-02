@@ -4,6 +4,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,8 +51,6 @@ public class ComposeTweetDialogFragment extends DialogFragment {
 
         initUserViews();
 
-        initCharCount();
-
         // Set up tweet button
         mBtnTweet.setOnClickListener( (clickedView) -> {
             mTimelineViewModel.submitTweet(mEditTweet.getText().toString());
@@ -63,8 +63,46 @@ public class ComposeTweetDialogFragment extends DialogFragment {
         return view;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        initCharCount();
+    }
+
     private void initCharCount() {
-        // TODO implement tweet character count
+
+        mTimelineViewModel.getCountObservable().observe(getActivity(),
+                count -> {
+                        if (count != null) {
+                            mCharCount.setText(
+                                    String.format(Locale.getDefault(), "%d", count));
+
+                            if (count < 1) {
+                                mCharCount.setTextColor(getResources().getColor(R.color.colorRed));
+                            } else {
+                                mCharCount.setTextColor(getResources().getColor(R.color.colorGrey));
+                            }
+                        }
+                    });
+
+        mEditTweet.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // Do nothing.
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                mTimelineViewModel.updateCount(charSequence.length());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Do nothing.
+            }
+        });
+
     }
 
     private void initUserViews() {

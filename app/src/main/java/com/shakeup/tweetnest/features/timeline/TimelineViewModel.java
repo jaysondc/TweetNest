@@ -25,6 +25,7 @@ public class TimelineViewModel extends AndroidViewModel {
     private MutableLiveData<Tweet> mPostedTweet = new MutableLiveData<>();
     private Long mMaxId = null;
     private Long mSinceId = null;
+    private MutableLiveData<Integer> mCharsRemaining = new MutableLiveData<>();
 
     public final String TAG = this.getClass().getSimpleName();
 
@@ -72,5 +73,14 @@ public class TimelineViewModel extends AndroidViewModel {
 
     public MutableLiveData<Tweet> getPostedTweet() {
         return mPostedTweet;
+    }
+
+    public LiveData<Integer> getCountObservable() {
+        this.mCharsRemaining.setValue(280);
+        return mCharsRemaining;
+    }
+
+    public void updateCount(int charCount) {
+        this.mCharsRemaining.setValue(280 - charCount);
     }
 }
