@@ -6,6 +6,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
 
+import com.shakeup.tweetnest.commons.api.TwitterClient;
 import com.shakeup.tweetnest.commons.models.Tweet;
 import com.shakeup.tweetnest.commons.models.User;
 import com.shakeup.tweetnest.commons.repos.TwitterRepoSingleton;
@@ -41,12 +42,12 @@ public class TimelineViewModel extends AndroidViewModel {
      * @return a reference to our LiveData object that the Activity can hook into.
      */
     public LiveData<List<Tweet>> getTimeline() {
-        mTwitterRepo.getTimeline(mMaxId, mSinceId, tweetListLiveData);
+        mTwitterRepo.getTimeline(mMaxId, mSinceId, TwitterClient.TIMELINE_HOME, tweetListLiveData);
         return tweetListLiveData;
     }
 
     public void loadMoreTimeline() {
-        mTwitterRepo.getTimeline(mMaxId, mSinceId, tweetListLiveData);
+        mTwitterRepo.getTimeline(mMaxId, mSinceId, TwitterClient.TIMELINE_HOME, tweetListLiveData);
     }
 
     public LiveData<User> getCurrentUser() {

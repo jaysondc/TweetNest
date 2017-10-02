@@ -1,6 +1,7 @@
 package com.shakeup.tweetnest.commons.api;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.codepath.oauth.OAuthBaseClient;
 import com.github.scribejava.apis.TwitterApi;
@@ -18,30 +19,36 @@ import com.loopj.android.http.RequestParams;
  * Add methods for each relevant endpoint in the API.
  */
 public class TwitterClient extends OAuthBaseClient {
-	public static final BaseApi REST_API_INSTANCE = TwitterApi.instance();
-	public static final String REST_URL = "https://api.twitter.com/1.1"; // Change this, base API URL
-	public static final String REST_CONSUMER_KEY = "iIT9EZ6EuY7jEZga9l5onXbCz";
-	public static final String REST_CONSUMER_SECRET = "jVzn6Ukpv5VHVcKU5Jv5NZeXAcn9ag9U9hTecXNZINBaBjPhx2";
-	public static final String REST_CALLBACK_URL = "x-oauthflow-twitter://arbitraryname.com";
+    public static final BaseApi REST_API_INSTANCE = TwitterApi.instance();
+    public static final String REST_URL = "https://api.twitter.com/1.1"; // Change this, base API URL
+    public static final String REST_CONSUMER_KEY = "iIT9EZ6EuY7jEZga9l5onXbCz";
+    public static final String REST_CONSUMER_SECRET = "jVzn6Ukpv5VHVcKU5Jv5NZeXAcn9ag9U9hTecXNZINBaBjPhx2";
+    public static final String REST_CALLBACK_URL = "x-oauthflow-twitter://arbitraryname.com";
 
-	// Landing page to indicate the OAuth flow worked in case Chrome for Android 25+ blocks navigation back to the app.
-	public static final String FALLBACK_URL =
-			"https://codepath.github.io/android-rest-client-template/success.html";
+    public static final int TIMELINE_HOME = 0;
+    public static final int TIMELINE_MENTIONS = 1;
+    public static final int TIMELINE_USER = 2;
 
-	// See https://developer.chrome.com/multidevice/android/intents
-	public static final String REST_CALLBACK_URL_TEMPLATE =
-			"intent://%s#Intent;action=android.intent.action.VIEW;scheme=%s;package=%s;S.browser_fallback_url=%s;end";
+    public static final String TAG = TwitterClient.class.getSimpleName();
 
-	public TwitterClient(Context context) {
-		super(context, REST_API_INSTANCE,
-				REST_URL,
-				REST_CONSUMER_KEY,
-				REST_CONSUMER_SECRET,
-				REST_CALLBACK_URL);
-	}
+    // Landing page to indicate the OAuth flow worked in case Chrome for Android 25+ blocks navigation back to the app.
+    public static final String FALLBACK_URL =
+            "https://codepath.github.io/android-rest-client-template/success.html";
 
-	// DEFINE METHODS for different API endpoints here
-	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
+    // See https://developer.chrome.com/multidevice/android/intents
+    public static final String REST_CALLBACK_URL_TEMPLATE =
+            "intent://%s#Intent;action=android.intent.action.VIEW;scheme=%s;package=%s;S.browser_fallback_url=%s;end";
+
+    public TwitterClient(Context context) {
+        super(context, REST_API_INSTANCE,
+                REST_URL,
+                REST_CONSUMER_KEY,
+                REST_CONSUMER_SECRET,
+                REST_CALLBACK_URL);
+    }
+
+    // DEFINE METHODS for different API endpoints here
+    /* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
 	 * 	  i.e getApiUrl("statuses/home_timeline.json");
 	 * 2. Define the parameters to pass to the request (query or body)
 	 *    i.e RequestParams params = new RequestParams("foo", "bar");
@@ -50,47 +57,65 @@ public class TwitterClient extends OAuthBaseClient {
 	 *    i.e client.post(apiUrl, params, handler);
 	 */
 
-	/**
-	 * Request the Home Timeline for the authenticated user. Callback is handled through the
-	 * {@link JsonHttpResponseHandler} argument
-	 * @param maxId Returns results with an ID less than
-	 *                 (that is, older than) or equal to the specified ID.
-	 * @param sinceId 	Returns results with an ID greater than
-	 *                     (that is, more recent than) the specified ID. There are limits to
-	 *                     the number of Tweets which can be accessed through the API. If the
-	 *                     limit of Tweets has occured since the since_id, the since_id will
-	 *                     be forced to the oldest ID available.
-	 * @param handler Handler callback that is used to handle request results.
-	 */
-	public void getHomeTimeline(Long maxId, Long sinceId, JsonHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("statuses/home_timeline.json");
-		// Can specify query string params directly or through RequestParams.
-		RequestParams params = new RequestParams();
-		if (maxId != null) params.put("max_id", maxId);
-		if (sinceId != null) params.put("since_id", sinceId);
-		client.get(apiUrl, params, handler);
-	}
+    /**
+     * Request a specified Timeline for the authenticated user. Callback is handled through the
+     * {@link JsonHttpResponseHandler} argument
+     *
+     * @param maxId        Returns results with an ID less than
+     *                     (that is, older than) or equal to the specified ID.
+     * @param sinceId      Returns results with an ID greater than
+     *                     (that is, more recent than) the specified ID. There are limits to
+     *                     the number of Tweets which can be accessed through the API. If the
+     *                     limit of Tweets has occured since the since_id, the since_id will
+     *                     be forced to the oldest ID available.
+     * @param timelineType the type of timeline to load.
+     * @param handler      Handler callback that is used to handle request results.
+     */
+    public void getTimeline(Long maxId, Long sinceId, int timelineType, JsonHttpResponseHandler handler) {
+        String apiUrl;
+        switch (timelineType) {
+            case TIMELINE_HOME:
+                apiUrl = getApiUrl("statuses/home_timeline.json");
+                break;
+            case TIMELINE_MENTIONS:
+                apiUrl = getApiUrl("statuses/mentions_timeline.json");
+                break;
+            case TIMELINE_USER:
+                apiUrl = getApiUrl("statuses/user_timeline.json");
+                break;
+            default:
+                Log.d(TAG, "getTimeline: Invalid timelineType!");
+                return;
+        }
+        // Can specify query string params directly or through RequestParams.
+        RequestParams params = new RequestParams();
+        if (maxId != null) params.put("max_id", maxId);
+        if (sinceId != null) params.put("since_id", sinceId);
+        client.get(apiUrl, params, handler);
+    }
 
-	/**
-	 * Get the current user
-	 * @param handler JSON Handler to parse the response
-	 */
-	public void getCurrentUser(JsonHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("account/verify_credentials.json");
+    /**
+     * Get the current user
+     *
+     * @param handler JSON Handler to parse the response
+     */
+    public void getCurrentUser(JsonHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("account/verify_credentials.json");
 
-		client.get(apiUrl, handler);
-	}
+        client.get(apiUrl, handler);
+    }
 
-	/**
-	 * Endpoint to post a new tweet.
-	 * @param tweetText text of the tweet. Assume already 280 char delimited
-	 * @param handler JSON Handler to parse the response
-	 */
-	public void postTweet(String tweetText, JsonHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("statuses/update.json");
-		// Can specify query string params directly or through RequestParams.
-		RequestParams params = new RequestParams();
-		if (tweetText != null) params.put("status", tweetText);
-		client.post(apiUrl, params, handler);
-	}
+    /**
+     * Endpoint to post a new tweet.
+     *
+     * @param tweetText text of the tweet. Assume already 280 char delimited
+     * @param handler   JSON Handler to parse the response
+     */
+    public void postTweet(String tweetText, JsonHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("statuses/update.json");
+        // Can specify query string params directly or through RequestParams.
+        RequestParams params = new RequestParams();
+        if (tweetText != null) params.put("status", tweetText);
+        client.post(apiUrl, params, handler);
+    }
 }
