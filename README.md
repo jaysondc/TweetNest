@@ -47,7 +47,7 @@ The following **bonus** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-[Walkthrough](https://i.imgur.com/zSauXOt.gif)
+[Walkthrough](https://imgur.com/wkOnIF3.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
