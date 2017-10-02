@@ -20,7 +20,8 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_margin="16dp"
-        android:src="@android:drawable/ic_delete"
+        android:src="@drawable/ic_open_in_new"
+        android:tint="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:onClick="showComposeFragment"/>

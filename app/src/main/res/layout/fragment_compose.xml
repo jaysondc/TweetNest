@@ -10,7 +10,8 @@
         android:id="@+id/compose_cancel"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:src="@android:drawable/ic_delete"
+        android:src="@drawable/ic_close"
+        android:tint="@android:color/darker_gray"
         app:layout_constraintBottom_toTopOf="@+id/compose_guideline"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
