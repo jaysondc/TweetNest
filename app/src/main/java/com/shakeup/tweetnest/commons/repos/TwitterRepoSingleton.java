@@ -47,27 +47,6 @@ public class TwitterRepoSingleton {
         return sTwitterRepo;
     }
 
-    public void getHomeTimeline(
-            Long maxId,
-            Long sinceId,
-            final MutableLiveData<List<Tweet>> tweets) {
-        getTimeline(maxId, sinceId, TwitterClient.TIMELINE_HOME, tweets);
-    }
-
-    public void getMentionsTimeline(
-            Long maxId,
-            Long sinceId,
-            final MutableLiveData<List<Tweet>> tweets) {
-        getTimeline(maxId, sinceId, TwitterClient.TIMELINE_MENTIONS, tweets);
-    }
-
-    public void getUserTimeline(
-            Long maxId,
-            Long sinceId,
-            final MutableLiveData<List<Tweet>> tweets) {
-        getTimeline(maxId, sinceId, TwitterClient.TIMELINE_USER, tweets);
-    }
-
     /**
      * Obtains the users Timeline and uses the list of {@link Tweet}s to populate the
      * {@link android.arch.lifecycle.LiveData} argument.
@@ -76,47 +55,49 @@ public class TwitterRepoSingleton {
             Long maxId,
             Long sinceId,
             int timelineType,
+            String userHandle,
             final MutableLiveData<List<Tweet>> tweets) {
 
-        mTwitterClient.getTimeline(maxId, sinceId, timelineType, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                Log.d(TAG, "getTimeline.onSuccess: " + response.toString());
+        mTwitterClient.getTimeline(
+                maxId, sinceId, timelineType, userHandle, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                        Log.d(TAG, "getTimeline.onSuccess: " + response.toString());
 
-                List<Tweet> tweetList = new ArrayList<>();
+                        List<Tweet> tweetList = new ArrayList<>();
 
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        String string = response.get(i).toString();
-                        Gson gson = new GsonBuilder().create();
-                        Tweet tweet = gson.fromJson(string, Tweet.class);
-                        tweetList.add(tweet);
-                    } catch (Exception e) {
-                        Log.d(TAG, "getTimeline.onSuccess: JSON parsing error!");
+                        for (int i = 0; i < response.length(); i++) {
+                            try {
+                                String string = response.get(i).toString();
+                                Gson gson = new GsonBuilder().create();
+                                Tweet tweet = gson.fromJson(string, Tweet.class);
+                                tweetList.add(tweet);
+                            } catch (Exception e) {
+                                Log.d(TAG, "getTimeline.onSuccess: JSON parsing error!");
+                            }
+                        }
+
+                        tweets.setValue(tweetList);
                     }
-                }
 
-                tweets.setValue(tweetList);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.d(TAG, "onFailure: " + throwable.toString());
-            }
-        });
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        Log.d(TAG, "onFailure: " + throwable.toString());
+                    }
+                });
     }
 
     public void getCurrentUser(final MutableLiveData<User> user) {
         mTwitterClient.getCurrentUser(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Log.d(TAG, "getCurrentUser.onSuccess: " + response.toString());
+                Log.d(TAG, "getUser.onSuccess: " + response.toString());
 
                 try {
                     Gson gson = new GsonBuilder().create();
                     user.setValue(gson.fromJson(response.toString(), User.class));
                 } catch (Exception e) {
-                    Log.d(TAG, "getCurrentUser.onSuccess: JSON parsing error!");
+                    Log.d(TAG, "getUser.onSuccess: JSON parsing error!");
                 }
             }
         });

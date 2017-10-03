@@ -1,4 +1,4 @@
-package com.shakeup.tweetnest.features.timeline.mentions;
+package com.shakeup.tweetnest.features.timeline.user;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
@@ -17,13 +17,13 @@ import java.util.List;
  * ViewModel for the UserTimelineFragment
  */
 
-public class MentionsTimelineViewModel extends ViewModel {
+public class UserTimelineViewModel extends ViewModel {
 
     public final String TAG = this.getClass().getSimpleName();
     private final TwitterRepoSingleton mTwitterRepo = TwitterRepoSingleton.getTwitterRepoSingleton();
 
     private MutableLiveData<List<Tweet>> tweetListLiveData = new MutableLiveData<>();
-    private MutableLiveData<User> mCurrentUser = new MutableLiveData<>();
+    private User mUser;
 
     private Long mMaxId = null;
     private Long mSinceId = null;
@@ -35,21 +35,21 @@ public class MentionsTimelineViewModel extends ViewModel {
      */
     public LiveData<List<Tweet>> getTimeline() {
         mTwitterRepo.getTimeline(
-                mMaxId, mSinceId, TwitterClient.TIMELINE_MENTIONS, null, tweetListLiveData);
+                mMaxId, mSinceId, TwitterClient.TIMELINE_MENTIONS, mUser.getScreenName(), tweetListLiveData);
         return tweetListLiveData;
     }
 
     public void loadMoreTimeline() {
         mTwitterRepo.getTimeline(
-                mMaxId, mSinceId, TwitterClient.TIMELINE_MENTIONS, null, tweetListLiveData);
+                mMaxId, mSinceId, TwitterClient.TIMELINE_MENTIONS, mUser.getScreenName(), tweetListLiveData);
     }
 
-    public LiveData<User> getCurrentUser() {
-        if (mCurrentUser.getValue() == null) {
-            mTwitterRepo.getCurrentUser(mCurrentUser);
-        }
+    public User getUser() {
+        return mUser;
+    }
 
-        return mCurrentUser;
+    public void setUser(User user) {
+        mUser = user;
     }
 
     public void setMaxId(Long mMaxId) {

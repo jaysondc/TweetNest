@@ -1,6 +1,7 @@
 package com.shakeup.tweetnest.features.timeline.adapters;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import com.bumptech.glide.Glide;
 import com.hannesdorfmann.adapterdelegates3.AdapterDelegate;
 import com.shakeup.tweetnest.R;
 import com.shakeup.tweetnest.commons.models.Tweet;
+import com.shakeup.tweetnest.commons.models.User;
+import com.shakeup.tweetnest.features.profile.ProfileActivity;
 
 import java.util.List;
 import java.util.Locale;
@@ -22,7 +25,7 @@ import butterknife.ButterKnife;
 
 /**
  * Created by Jayson on 9/27/2017.
- *
+ * <p>
  * Adpter delegate used by the {@link TweetAdapter} to
  * display {@link com.shakeup.tweetnest.commons.models.Tweet}s
  */
@@ -62,11 +65,16 @@ public class TweetAdapterDelegate extends AdapterDelegate<List<Tweet>> {
 
     public class TweetViewHolder extends RecyclerView.ViewHolder {
         final View mView;
-        @BindView(R.id.image_avatar) public ImageView avatar;
-        @BindView(R.id.text_username) public TextView username;
-        @BindView(R.id.text_handle) public TextView handle;
-        @BindView(R.id.text_time_posted) public TextView timePosted;
-        @BindView(R.id.text_body) public TextView body;
+        @BindView(R.id.image_avatar)
+        public ImageView avatar;
+        @BindView(R.id.text_username)
+        public TextView username;
+        @BindView(R.id.text_handle)
+        public TextView handle;
+        @BindView(R.id.text_time_posted)
+        public TextView timePosted;
+        @BindView(R.id.text_body)
+        public TextView body;
 
         public TweetViewHolder(View view) {
             super(view);
@@ -74,7 +82,7 @@ public class TweetAdapterDelegate extends AdapterDelegate<List<Tweet>> {
             ButterKnife.bind(this, view);
         }
 
-        public void bind(final Tweet tweet, int position){
+        public void bind(final Tweet tweet, int position) {
             // Bind tweet to views
             username.setText(tweet.getUser().getName());
             String strHandle = String.format(Locale.getDefault(), "@%s", tweet.getUser().getScreenName());
@@ -85,7 +93,14 @@ public class TweetAdapterDelegate extends AdapterDelegate<List<Tweet>> {
             Glide.with(itemView.getContext())
                     .load(tweet.getUser().getProfileImageUrlHttpsOriginal())
                     .into(avatar);
+
+            avatar.setOnClickListener(view -> openUserProfile(tweet.getUser()));
+        }
+
+        private void openUserProfile(User user) {
+            Intent intent = new Intent(mView.getContext(), ProfileActivity.class);
+            intent.putExtra(ProfileActivity.USER, "SOME SHIT");
+            mView.getContext().startActivity(intent);
         }
     }
-
 }

@@ -19,14 +19,14 @@ import java.util.List;
 
 public class HomeTimelineViewModel extends ViewModel {
 
+    public final String TAG = this.getClass().getSimpleName();
+    private final TwitterRepoSingleton mTwitterRepo = TwitterRepoSingleton.getTwitterRepoSingleton();
+
     private MutableLiveData<List<Tweet>> tweetListLiveData = new MutableLiveData<>();
     private MutableLiveData<User> mCurrentUser = new MutableLiveData<>();
+
     private Long mMaxId = null;
     private Long mSinceId = null;
-
-    public final String TAG = this.getClass().getSimpleName();
-
-    private final TwitterRepoSingleton mTwitterRepo = TwitterRepoSingleton.getTwitterRepoSingleton();
 
     /**
      * Load the Timeline for the first time.
@@ -34,12 +34,14 @@ public class HomeTimelineViewModel extends ViewModel {
      * @return a reference to our LiveData object that the Activity can hook into.
      */
     public LiveData<List<Tweet>> getTimeline() {
-        mTwitterRepo.getTimeline(mMaxId, mSinceId, TwitterClient.TIMELINE_HOME, tweetListLiveData);
+        mTwitterRepo.getTimeline(
+                mMaxId, mSinceId, TwitterClient.TIMELINE_HOME, null, tweetListLiveData);
         return tweetListLiveData;
     }
 
     public void loadMoreTimeline() {
-        mTwitterRepo.getTimeline(mMaxId, mSinceId, TwitterClient.TIMELINE_HOME, tweetListLiveData);
+        mTwitterRepo.getTimeline(
+                mMaxId, mSinceId, TwitterClient.TIMELINE_HOME, null, tweetListLiveData);
     }
 
     public LiveData<User> getCurrentUser() {

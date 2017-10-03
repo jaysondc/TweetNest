@@ -49,7 +49,7 @@ public class TwitterClient extends OAuthBaseClient {
 
     // DEFINE METHODS for different API endpoints here
     /* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
-	 * 	  i.e getApiUrl("statuses/home_timeline.json");
+     * 	  i.e getApiUrl("statuses/home_timeline.json");
 	 * 2. Define the parameters to pass to the request (query or body)
 	 *    i.e RequestParams params = new RequestParams("foo", "bar");
 	 * 3. Define the request method and make a call to the client
@@ -69,9 +69,15 @@ public class TwitterClient extends OAuthBaseClient {
      *                     limit of Tweets has occured since the since_id, the since_id will
      *                     be forced to the oldest ID available.
      * @param timelineType the type of timeline to load.
+     * @param userHandle   the Twitter username of the timeline to retrieve
      * @param handler      Handler callback that is used to handle request results.
      */
-    public void getTimeline(Long maxId, Long sinceId, int timelineType, JsonHttpResponseHandler handler) {
+    public void getTimeline(
+            Long maxId,
+            Long sinceId,
+            int timelineType,
+            String userHandle,
+            JsonHttpResponseHandler handler) {
         String apiUrl;
         switch (timelineType) {
             case TIMELINE_HOME:
@@ -91,6 +97,9 @@ public class TwitterClient extends OAuthBaseClient {
         RequestParams params = new RequestParams();
         if (maxId != null) params.put("max_id", maxId);
         if (sinceId != null) params.put("since_id", sinceId);
+        if (timelineType == TIMELINE_USER && !"".equals(userHandle))
+            params.put("screen_name", userHandle);
+
         client.get(apiUrl, params, handler);
     }
 

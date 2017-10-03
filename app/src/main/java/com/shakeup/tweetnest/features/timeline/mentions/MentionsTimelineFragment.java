@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.shakeup.tweetnest.R;
-import com.shakeup.tweetnest.features.timeline.adapters.EndlessRecyclerViewScrollListener;
+import com.shakeup.tweetnest.commons.listeners.EndlessRecyclerViewScrollListener;
 import com.shakeup.tweetnest.features.timeline.adapters.TweetAdapter;
 
 import java.util.ArrayList;
