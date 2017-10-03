@@ -1,4 +1,4 @@
-package com.shakeup.tweetnest.features.timeline.home;
+package com.shakeup.tweetnest.features.timeline.mentions;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
@@ -12,12 +12,12 @@ import com.shakeup.tweetnest.commons.repos.TwitterRepoSingleton;
 import java.util.List;
 
 /**
- * Created by Jayson on 9/27/2017.
+ * Created by Jayson on 10/3/2017.
  * <p>
- * ViewModel for the HomeTimelineFragment
+ * ViewModel for the MentionsTimelineFragment
  */
 
-public class HomeTimelineViewModel extends ViewModel {
+public class MentionsTimelineViewModel extends ViewModel {
 
     private MutableLiveData<List<Tweet>> tweetListLiveData = new MutableLiveData<>();
     private MutableLiveData<User> mCurrentUser = new MutableLiveData<>();
@@ -34,12 +34,12 @@ public class HomeTimelineViewModel extends ViewModel {
      * @return a reference to our LiveData object that the Activity can hook into.
      */
     public LiveData<List<Tweet>> getTimeline() {
-        mTwitterRepo.getTimeline(mMaxId, mSinceId, TwitterClient.TIMELINE_HOME, tweetListLiveData);
+        mTwitterRepo.getTimeline(mMaxId, mSinceId, TwitterClient.TIMELINE_MENTIONS, tweetListLiveData);
         return tweetListLiveData;
     }
 
     public void loadMoreTimeline() {
-        mTwitterRepo.getTimeline(mMaxId, mSinceId, TwitterClient.TIMELINE_HOME, tweetListLiveData);
+        mTwitterRepo.getTimeline(mMaxId, mSinceId, TwitterClient.TIMELINE_MENTIONS, tweetListLiveData);
     }
 
     public LiveData<User> getCurrentUser() {

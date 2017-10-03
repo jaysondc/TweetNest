@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.shakeup.tweetnest.R;
 import com.shakeup.tweetnest.features.timeline.home.HomeTimelineFragment;
+import com.shakeup.tweetnest.features.timeline.mentions.MentionsTimelineFragment;
 
 /**
  * Created by Jayson on 10/3/2017.
@@ -16,7 +17,7 @@ import com.shakeup.tweetnest.features.timeline.home.HomeTimelineFragment;
 
 public class TimelinePagerAdapter extends FragmentPagerAdapter {
 
-    private final int PAGE_COUNT = 1;
+    private final int PAGE_COUNT = 2;
 
     private Context mContext;
 
@@ -31,8 +32,7 @@ public class TimelinePagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return HomeTimelineFragment.newInstance();
             case 1:
-                // TODO Add Mentions Fragment
-                return null;
+                return MentionsTimelineFragment.newInstance();
             default:
                 return null;
         }

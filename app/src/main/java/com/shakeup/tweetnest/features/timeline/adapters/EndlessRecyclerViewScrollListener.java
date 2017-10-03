@@ -1,4 +1,4 @@
-package com.shakeup.tweetnest.features.timeline;
+package com.shakeup.tweetnest.features.timeline.adapters;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;

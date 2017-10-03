@@ -1,9 +1,8 @@
-package com.shakeup.tweetnest.features.timeline.home;
+package com.shakeup.tweetnest.features.timeline.mentions;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,8 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.shakeup.tweetnest.R;
-import com.shakeup.tweetnest.features.compose.ComposeTweetDialogFragment;
-import com.shakeup.tweetnest.features.compose.ComposeTweetViewModel;
 import com.shakeup.tweetnest.features.timeline.adapters.EndlessRecyclerViewScrollListener;
 import com.shakeup.tweetnest.features.timeline.adapters.TweetAdapter;
 
@@ -23,22 +20,19 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HomeTimelineFragment extends Fragment {
+public class MentionsTimelineFragment extends Fragment {
 
     private final String TAG = this.getClass().getSimpleName();
-    @BindView(R.id.recycler_timeline_home)
+    @BindView(R.id.recycler_timeline_mentions)
     public RecyclerView mRecyclerTimeline;
-    @BindView(R.id.fab_compose)
-    public FloatingActionButton mFabCompose;
 
-    public HomeTimelineViewModel mHomeTimelineViewModel;
-    public ComposeTweetViewModel mComposeViewModel;
+    public MentionsTimelineViewModel mMentionsTimelineViewModel;
 
-    public static HomeTimelineFragment newInstance() {
+    public static MentionsTimelineFragment newInstance() {
 
         Bundle args = new Bundle();
 
-        HomeTimelineFragment fragment = new HomeTimelineFragment();
+        MentionsTimelineFragment fragment = new MentionsTimelineFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,12 +41,11 @@ public class HomeTimelineFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_timeline_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_timeline_mentions, container, false);
 
         ButterKnife.bind(this, view);
 
-        mHomeTimelineViewModel = ViewModelProviders.of(getActivity()).get(HomeTimelineViewModel.class);
-        mComposeViewModel = ViewModelProviders.of(getActivity()).get(ComposeTweetViewModel.class);
+        mMentionsTimelineViewModel = ViewModelProviders.of(getActivity()).get(MentionsTimelineViewModel.class);
 
         return view;
     }
@@ -61,30 +54,9 @@ public class HomeTimelineFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mHomeTimelineViewModel.getCurrentUser();
+        mMentionsTimelineViewModel.getCurrentUser();
 
         initRecycler();
-
-        initNewTweet();
-
-        initFab();
-    }
-
-    private void initFab() {
-        mFabCompose.setOnClickListener( view -> showComposeFragment() );
-    }
-
-    /**
-     * Observes the ViewModel for a newly posted tweet and adds it to the timeline. Triggered
-     * when our user successfully posts a tweet.
-     */
-    private void initNewTweet() {
-        mComposeViewModel.getPostedTweet().observe(this, (tweet -> {
-            if (tweet != null) {
-                ((TweetAdapter) mRecyclerTimeline.getAdapter()).insertPostedTweet(tweet);
-                mRecyclerTimeline.smoothScrollToPosition(0);
-            }
-        }));
     }
 
     private void initRecycler() {
@@ -100,24 +72,19 @@ public class HomeTimelineFragment extends Fragment {
         ) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                mHomeTimelineViewModel.loadMoreTimeline();
+                mMentionsTimelineViewModel.loadMoreTimeline();
             }
         });
 
         // Load the initial timeline and listen for further changes
-        mHomeTimelineViewModel.getTimeline().observe(this, tweets -> {
+        mMentionsTimelineViewModel.getTimeline().observe(this, tweets -> {
             tweetAdapter.appendTweets(tweets);
 
             // Update maxId and sinceId in our ViewModel
             // TODO Factor in SinceId when refreshing the page
             if(tweets != null && tweets.size() > 0){
-                mHomeTimelineViewModel.setMaxId(tweets.get(tweets.size()-1).getId()-1);
+                mMentionsTimelineViewModel.setMaxId(tweets.get(tweets.size()-1).getId()-1);
             }
         });
-    }
-
-    public void showComposeFragment() {
-        ComposeTweetDialogFragment fragment = new ComposeTweetDialogFragment();
-        fragment.show(getActivity().getSupportFragmentManager(), getString(R.string.tag_compose));
     }
 }
