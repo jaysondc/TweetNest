@@ -1,4 +1,4 @@
-package com.shakeup.tweetnest.features.timeline;
+package com.shakeup.tweetnest.features.timeline.home;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
@@ -17,7 +17,7 @@ import java.util.List;
  * ViewModel for the TimelineActivity
  */
 
-public class TimelineViewModel extends ViewModel {
+public class HomeTimelineViewModel extends ViewModel {
 
     private MutableLiveData<List<Tweet>> tweetListLiveData = new MutableLiveData<>();
     private MutableLiveData<User> mCurrentUser = new MutableLiveData<>();
