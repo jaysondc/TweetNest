@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.shakeup.tweetnest.R;
 import com.shakeup.tweetnest.features.timeline.adapters.TimelinePagerAdapter;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TimelineActivity extends AppCompatActivity {
@@ -16,13 +18,22 @@ public class TimelineActivity extends AppCompatActivity {
 
     private final String TAG = this.getClass().getSimpleName();
 
+    @BindView(R.id.toolbar_timeline)
+    public Toolbar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
         ButterKnife.bind(this);
 
+        initToolbar();
         initPager();
+    }
+
+    private void initToolbar() {
+        mToolbar.setTitle("Twitter!");
+        this.setSupportActionBar(mToolbar);
     }
 
     private void initPager() {

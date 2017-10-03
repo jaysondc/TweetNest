@@ -7,13 +7,24 @@
     android:layout_height="match_parent"
     tools:context="com.shakeup.tweetnest.features.timeline.TimelineActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_timeline"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:background="@color/colorPrimary"
+        android:titleTextColor="@color/primaryTextColorInverse"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_timeline"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_timeline"
+        app:tabIndicatorColor="@color/colorPrimary"
         app:tabMode="fixed" />
 
     <android.support.v4.view.ViewPager
@@ -24,6 +35,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tab_timeline" />
+        app:layout_constraintTop_toBottomOf="@+id/tab_timeline" />
 
 </android.support.constraint.ConstraintLayout>
