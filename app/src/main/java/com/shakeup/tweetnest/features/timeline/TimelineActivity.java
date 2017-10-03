@@ -1,12 +1,12 @@
 package com.shakeup.tweetnest.features.timeline;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.shakeup.tweetnest.R;
-import com.shakeup.tweetnest.features.timeline.home.HomeTimelineFragment;
+import com.shakeup.tweetnest.features.timeline.adapters.TimelinePagerAdapter;
 
 import butterknife.ButterKnife;
 
@@ -22,14 +22,17 @@ public class TimelineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeline);
         ButterKnife.bind(this);
 
-        initFragment();
+        initPager();
     }
 
-    private void initFragment() {
-        Fragment fragment = HomeTimelineFragment.newInstance();
+    private void initPager() {
+        // Get the ViewPager and set it's PagerAdapter so that it can display items
+        ViewPager viewPager = findViewById(R.id.pager_timeline);
+        viewPager.setAdapter(
+                new TimelinePagerAdapter(getSupportFragmentManager(), this));
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.container_timeline, fragment, HOME_TIMELINE_FRAGMENT)
-                .commit();
+        // Give the TabLayout the ViewPager
+        TabLayout tabLayout = findViewById(R.id.tab_timeline);
+        tabLayout.setupWithViewPager(viewPager);
     }
 }

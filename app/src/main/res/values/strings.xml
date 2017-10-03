@@ -6,4 +6,6 @@
     <string name="compose_tweet">Tweet</string>
     <string name="tag_compose">compose_fragment_tag</string>
     <string name="compose_hint">What\'s happening?</string>
+    <string name="tab_title_home">Home</string>
+    <string name="tab_title_mentions">Mentions</string>
 </resources>
