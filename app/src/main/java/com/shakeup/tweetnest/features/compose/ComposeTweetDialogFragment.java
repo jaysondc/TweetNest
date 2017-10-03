@@ -4,11 +4,13 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,7 +18,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.shakeup.tweetnest.R;
-import com.shakeup.tweetnest.features.timeline.TimelineViewModel;
 
 import java.util.Locale;
 
@@ -37,7 +38,7 @@ public class ComposeTweetDialogFragment extends DialogFragment {
     @BindView(R.id.compose_handle) public TextView mHandle;
     @BindView(R.id.edit_tweet) public EditText mEditTweet;
 
-    public TimelineViewModel mTimelineViewModel;
+    public ComposeTweetViewModel mComposeViewModel;
 
     @Nullable
     @Override
@@ -47,13 +48,13 @@ public class ComposeTweetDialogFragment extends DialogFragment {
         ButterKnife.bind(this, view);
 
         // ViewModel shared by the TimelineActivity
-        mTimelineViewModel = ViewModelProviders.of(getActivity()).get(TimelineViewModel.class);
+        mComposeViewModel = ViewModelProviders.of(getActivity()).get(ComposeTweetViewModel.class);
 
         initUserViews();
 
         // Set up tweet button
         mBtnTweet.setOnClickListener( (clickedView) -> {
-            mTimelineViewModel.submitTweet(mEditTweet.getText().toString());
+            mComposeViewModel.submitTweet(mEditTweet.getText().toString());
             this.dismiss();
         });
 
@@ -72,16 +73,18 @@ public class ComposeTweetDialogFragment extends DialogFragment {
 
     private void initCharCount() {
 
-        mTimelineViewModel.getCountObservable().observe(getActivity(),
+        mComposeViewModel.getCountObservable().observe(getActivity(),
                 count -> {
                         if (count != null) {
                             mCharCount.setText(
                                     String.format(Locale.getDefault(), "%d", count));
 
                             if (count < 1) {
-                                mCharCount.setTextColor(getResources().getColor(R.color.colorRed));
+                                mCharCount.setTextColor(
+                                        ContextCompat.getColor(getActivity(), R.color.colorRed));
                             } else {
-                                mCharCount.setTextColor(getResources().getColor(R.color.colorGrey));
+                                mCharCount.setTextColor(
+                                        ContextCompat.getColor(getActivity(), R.color.colorGrey));
                             }
                         }
                     });
@@ -94,7 +97,7 @@ public class ComposeTweetDialogFragment extends DialogFragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                mTimelineViewModel.updateCount(charSequence.length());
+                mComposeViewModel.updateCount(charSequence.length());
             }
 
             @Override
@@ -106,11 +109,13 @@ public class ComposeTweetDialogFragment extends DialogFragment {
     }
 
     private void initUserViews() {
-        mTimelineViewModel.getCurrentUser().observe(this, (user) -> {
-            mHandle.setText(String.format(Locale.getDefault(), "@%s", user.getScreenName()));
-            Glide.with(this)
-                    .load(user.getProfileImageUrlHttpsOriginal())
-                    .into(mImgAvatar);
+        mComposeViewModel.getCurrentUser().observe(this, (user) -> {
+            if (user != null) {
+                mHandle.setText(String.format(Locale.getDefault(), "@%s", user.getScreenName()));
+                Glide.with(this)
+                        .load(user.getProfileImageUrlHttpsOriginal())
+                        .into(mImgAvatar);
+            }
         });
     }
 
@@ -119,6 +124,8 @@ public class ComposeTweetDialogFragment extends DialogFragment {
         super.onResume();
         int width = getResources().getDimensionPixelSize(R.dimen.popup_width);
         int height = getResources().getDimensionPixelSize(R.dimen.popup_height);
-        getDialog().getWindow().setLayout(width, height);
+        Window window = getDialog().getWindow();
+        if (window != null)
+        window.setLayout(width, height);
     }
 }

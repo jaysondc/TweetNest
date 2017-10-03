@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.shakeup.tweetnest.R;
 import com.shakeup.tweetnest.features.compose.ComposeTweetDialogFragment;
+import com.shakeup.tweetnest.features.compose.ComposeTweetViewModel;
 import com.shakeup.tweetnest.features.timeline.adapters.TweetAdapter;
 
 import java.util.ArrayList;
@@ -23,7 +24,8 @@ public class TimelineActivity extends AppCompatActivity {
     @BindView(R.id.recycler_timeline)
     public RecyclerView mRecyclerTimeline;
 
-    TimelineViewModel mTimelineViewModel;
+    public TimelineViewModel mTimelineViewModel;
+    public ComposeTweetViewModel mComposeViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class TimelineActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mTimelineViewModel = ViewModelProviders.of(this).get(TimelineViewModel.class);
+        mComposeViewModel = ViewModelProviders.of(this).get(ComposeTweetViewModel.class);
 
         mTimelineViewModel.getCurrentUser();
 
@@ -45,7 +48,7 @@ public class TimelineActivity extends AppCompatActivity {
      * when our user successfully posts a tweet.
      */
     private void initNewTweet() {
-        mTimelineViewModel.getPostedTweet().observe(this, (tweet -> {
+        mComposeViewModel.getPostedTweet().observe(this, (tweet -> {
             if (tweet != null) {
                 ((TweetAdapter) mRecyclerTimeline.getAdapter()).insertPostedTweet(tweet);
                 mRecyclerTimeline.smoothScrollToPosition(0);
