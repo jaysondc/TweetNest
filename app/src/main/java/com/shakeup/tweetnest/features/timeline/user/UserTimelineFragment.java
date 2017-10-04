@@ -89,7 +89,7 @@ public class UserTimelineFragment extends Fragment {
             // Update maxId and sinceId in our ViewModel
             // TODO Factor in SinceId when refreshing the page
             if(tweets != null && tweets.size() > 0){
-                mUserTimelineViewModel.setMaxId(tweets.get(tweets.size()-1).getId()-1);
+                mUserTimelineViewModel.setMaxId(tweets.get(tweets.size()-1).id-1);
             }
         });
     }

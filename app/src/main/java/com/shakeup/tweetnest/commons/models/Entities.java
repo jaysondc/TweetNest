@@ -1,6 +1,7 @@
 
 package com.shakeup.tweetnest.commons.models;
 
+import java.util.ArrayList;
 import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -11,15 +12,18 @@ import com.google.gson.annotations.SerializedName;
 public class Entities implements Parcelable
 {
 
-    @SerializedName("urls")
-    @Expose
-    private List<Object> urls = null;
     @SerializedName("hashtags")
     @Expose
-    private List<Object> hashtags = null;
+    public List<Object> hashtags = new ArrayList<Object>();
+    @SerializedName("symbols")
+    @Expose
+    public List<Object> symbols = new ArrayList<Object>();
     @SerializedName("user_mentions")
     @Expose
-    private List<Object> userMentions = null;
+    public List<UserMention> userMentions = new ArrayList<UserMention>();
+    @SerializedName("urls")
+    @Expose
+    public List<Url> urls = new ArrayList<Url>();
     public final static Parcelable.Creator<Entities> CREATOR = new Creator<Entities>() {
 
 
@@ -38,42 +42,20 @@ public class Entities implements Parcelable
     ;
 
     protected Entities(Parcel in) {
-        in.readList(this.urls, (java.lang.Object.class.getClassLoader()));
         in.readList(this.hashtags, (java.lang.Object.class.getClassLoader()));
-        in.readList(this.userMentions, (java.lang.Object.class.getClassLoader()));
+        in.readList(this.symbols, (java.lang.Object.class.getClassLoader()));
+        in.readList(this.userMentions, (com.shakeup.tweetnest.commons.models.UserMention.class.getClassLoader()));
+        in.readList(this.urls, (com.shakeup.tweetnest.commons.models.Url.class.getClassLoader()));
     }
 
     public Entities() {
     }
 
-    public List<Object> getUrls() {
-        return urls;
-    }
-
-    public void setUrls(List<Object> urls) {
-        this.urls = urls;
-    }
-
-    public List<Object> getHashtags() {
-        return hashtags;
-    }
-
-    public void setHashtags(List<Object> hashtags) {
-        this.hashtags = hashtags;
-    }
-
-    public List<Object> getUserMentions() {
-        return userMentions;
-    }
-
-    public void setUserMentions(List<Object> userMentions) {
-        this.userMentions = userMentions;
-    }
-
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeList(urls);
         dest.writeList(hashtags);
+        dest.writeList(symbols);
         dest.writeList(userMentions);
+        dest.writeList(urls);
     }
 
     public int describeContents() {

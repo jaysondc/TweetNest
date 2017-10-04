@@ -9,34 +9,34 @@ import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Url_ implements Parcelable
+public class Description implements Parcelable
 {
 
     @SerializedName("urls")
     @Expose
-    public List<Url__> urls = new ArrayList<Url__>();
-    public final static Parcelable.Creator<Url_> CREATOR = new Creator<Url_>() {
+    public List<Url___> urls = new ArrayList<Url___>();
+    public final static Parcelable.Creator<Description> CREATOR = new Creator<Description>() {
 
 
         @SuppressWarnings({
             "unchecked"
         })
-        public Url_ createFromParcel(Parcel in) {
-            return new Url_(in);
+        public Description createFromParcel(Parcel in) {
+            return new Description(in);
         }
 
-        public Url_[] newArray(int size) {
-            return (new Url_[size]);
+        public Description[] newArray(int size) {
+            return (new Description[size]);
         }
 
     }
     ;
 
-    protected Url_(Parcel in) {
-        in.readList(this.urls, (com.shakeup.tweetnest.commons.models.Url__.class.getClassLoader()));
+    protected Description(Parcel in) {
+        in.readList(this.urls, (com.shakeup.tweetnest.commons.models.Url___.class.getClassLoader()));
     }
 
-    public Url_() {
+    public Description() {
     }
 
     public void writeToParcel(Parcel dest, int flags) {

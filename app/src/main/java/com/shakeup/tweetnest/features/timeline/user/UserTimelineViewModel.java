@@ -35,13 +35,13 @@ public class UserTimelineViewModel extends ViewModel {
      */
     public LiveData<List<Tweet>> getTimeline() {
         mTwitterRepo.getTimeline(
-                mMaxId, mSinceId, TwitterClient.TIMELINE_USER, mUser.getScreenName(), tweetListLiveData);
+                mMaxId, mSinceId, TwitterClient.TIMELINE_USER, mUser.screenName, tweetListLiveData);
         return tweetListLiveData;
     }
 
     public void loadMoreTimeline() {
         mTwitterRepo.getTimeline(
-                mMaxId, mSinceId, TwitterClient.TIMELINE_USER, mUser.getScreenName(), tweetListLiveData);
+                mMaxId, mSinceId, TwitterClient.TIMELINE_USER, mUser.screenName, tweetListLiveData);
     }
 
     public User getUser() {

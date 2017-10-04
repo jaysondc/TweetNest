@@ -67,6 +67,10 @@ dependencies {
     // GSON
     compile 'com.google.code.gson:gson:2.8.2'
 
+    // Parceler
+    compile 'org.parceler:parceler-api:1.1.9'
+    annotationProcessor 'org.parceler:parceler:1.1.9'
+
     testCompile 'junit:junit:4.12'
 }
 allprojects {

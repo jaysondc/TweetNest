@@ -85,17 +85,17 @@ public class TweetAdapterDelegate extends AdapterDelegate<List<Tweet>> {
 
         public void bind(final Tweet tweet, int position) {
             // Bind tweet to views
-            username.setText(tweet.getUser().getName());
-            String strHandle = String.format(Locale.getDefault(), "@%s", tweet.getUser().getScreenName());
+            username.setText(tweet.user.name);
+            String strHandle = String.format(Locale.getDefault(), "@%s", tweet.user.screenName);
             handle.setText(strHandle);
             timePosted.setText(String.format("- %s", tweet.getCreatedAtRelative()));
-            body.setText(tweet.getText());
+            body.setText(tweet.text);
 
             Glide.with(itemView.getContext())
-                    .load(tweet.getUser().getProfileImageUrlHttpsOriginal())
+                    .load(tweet.user.getProfileImageUrlHttpsOriginal())
                     .into(avatar);
 
-            avatar.setOnClickListener(view -> openUserProfile(tweet.getUser()));
+            avatar.setOnClickListener(view -> openUserProfile(tweet.user));
         }
 
         private void openUserProfile(User user) {

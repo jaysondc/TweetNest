@@ -12,10 +12,10 @@ public class Entities_ implements Parcelable
 
     @SerializedName("url")
     @Expose
-    private Url url;
+    public Url_ url;
     @SerializedName("description")
     @Expose
-    private Object description;
+    public Description description;
     public final static Parcelable.Creator<Entities_> CREATOR = new Creator<Entities_>() {
 
 
@@ -34,27 +34,11 @@ public class Entities_ implements Parcelable
     ;
 
     protected Entities_(Parcel in) {
-        this.url = ((Url) in.readValue((Url.class.getClassLoader())));
-        this.description = ((Object) in.readValue((Object.class.getClassLoader())));
+        this.url = ((Url_) in.readValue((Url_.class.getClassLoader())));
+        this.description = ((Description) in.readValue((Description.class.getClassLoader())));
     }
 
     public Entities_() {
-    }
-
-    public Url getUrl() {
-        return url;
-    }
-
-    public void setUrl(Url url) {
-        this.url = url;
-    }
-
-    public Object getDescription() {
-        return description;
-    }
-
-    public void setDescription(Object description) {
-        this.description = description;
     }
 
     public void writeToParcel(Parcel dest, int flags) {

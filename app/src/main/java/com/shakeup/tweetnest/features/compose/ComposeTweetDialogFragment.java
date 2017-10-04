@@ -111,7 +111,7 @@ public class ComposeTweetDialogFragment extends DialogFragment {
     private void initUserViews() {
         mComposeViewModel.getCurrentUser().observe(this, (user) -> {
             if (user != null) {
-                mHandle.setText(String.format(Locale.getDefault(), "@%s", user.getScreenName()));
+                mHandle.setText(String.format(Locale.getDefault(), "@%s", user.screenName));
                 Glide.with(this)
                         .load(user.getProfileImageUrlHttpsOriginal())
                         .into(mImgAvatar);
