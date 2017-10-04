@@ -1,12 +1,13 @@
 
 package com.shakeup.tweetnest.commons.models;
 
-import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class Url_ implements Parcelable
 {
@@ -43,7 +44,9 @@ public class Url_ implements Parcelable
     protected Url_(Parcel in) {
         this.expandedUrl = ((Object) in.readValue((Object.class.getClassLoader())));
         this.url = ((String) in.readValue((String.class.getClassLoader())));
-        in.readList(this.indices, (java.lang.Long.class.getClassLoader()));
+        if (this.indices != null) {
+            in.readList(this.indices, (java.lang.Long.class.getClassLoader()));
+        }
         this.displayUrl = ((Object) in.readValue((Object.class.getClassLoader())));
     }
 

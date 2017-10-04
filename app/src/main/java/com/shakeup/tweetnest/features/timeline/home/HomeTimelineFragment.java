@@ -13,9 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.shakeup.tweetnest.R;
+import com.shakeup.tweetnest.commons.listeners.EndlessRecyclerViewScrollListener;
 import com.shakeup.tweetnest.features.compose.ComposeTweetDialogFragment;
 import com.shakeup.tweetnest.features.compose.ComposeTweetViewModel;
-import com.shakeup.tweetnest.commons.listeners.EndlessRecyclerViewScrollListener;
 import com.shakeup.tweetnest.features.timeline.adapters.TweetAdapter;
 
 import java.util.ArrayList;
@@ -64,14 +64,12 @@ public class HomeTimelineFragment extends Fragment {
         mHomeTimelineViewModel.getCurrentUser();
 
         initRecycler();
-
         initNewTweet();
-
         initFab();
     }
 
     private void initFab() {
-        mFabCompose.setOnClickListener( view -> showComposeFragment() );
+        mFabCompose.setOnClickListener(view -> showComposeFragment());
     }
 
     /**
@@ -110,8 +108,8 @@ public class HomeTimelineFragment extends Fragment {
 
             // Update maxId and sinceId in our ViewModel
             // TODO Factor in SinceId when refreshing the page
-            if(tweets != null && tweets.size() > 0){
-                mHomeTimelineViewModel.setMaxId(tweets.get(tweets.size()-1).getId()-1);
+            if (tweets != null && tweets.size() > 0) {
+                mHomeTimelineViewModel.setMaxId(tweets.get(tweets.size() - 1).getId() - 1);
             }
         });
     }

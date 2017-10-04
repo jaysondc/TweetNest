@@ -1,6 +1,7 @@
 package com.shakeup.tweetnest.features.timeline.adapters;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -98,9 +99,11 @@ public class TweetAdapterDelegate extends AdapterDelegate<List<Tweet>> {
         }
 
         private void openUserProfile(User user) {
-            Intent intent = new Intent(mView.getContext(), ProfileActivity.class);
-            intent.putExtra(ProfileActivity.USER, "SOME SHIT");
-            mView.getContext().startActivity(intent);
+            Context context = mView.getContext();
+
+            Intent intent = new Intent(context, ProfileActivity.class);
+            intent.putExtra(ProfileActivity.USER, user);
+            context.startActivity(intent);
         }
     }
 }
