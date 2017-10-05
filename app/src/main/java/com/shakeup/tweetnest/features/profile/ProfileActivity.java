@@ -8,7 +8,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.shakeup.tweetnest.R;
 import com.shakeup.tweetnest.commons.models.User;
 import com.shakeup.tweetnest.features.timeline.user.UserTimelineFragment;
@@ -33,6 +35,8 @@ public class ProfileActivity extends AppCompatActivity {
     public AppBarLayout mAppBarLayout;
     @BindView(R.id.profile_collapsing_toolbar)
     public CollapsingToolbarLayout mCollapsingToolbarLayout;
+    @BindView(R.id.image_profile_background)
+    public ImageView mProfileBackground;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +60,10 @@ public class ProfileActivity extends AppCompatActivity {
         mToolbar.setTitle(" ");
         this.setSupportActionBar(mToolbar);
 
+        Glide.with(this).load(mProfileViewModel.getUser().profileBackgroundImageUrlHttps)
+                .into(mProfileBackground);
+
+        // Dynamically add the title when collapsed
         mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isShow = false;
             int scrollRange = -1;
