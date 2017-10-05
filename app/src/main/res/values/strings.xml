@@ -8,4 +8,5 @@
     <string name="compose_hint">What\'s happening?</string>
     <string name="tab_title_home">Home</string>
     <string name="tab_title_mentions">Mentions</string>
+    <string name="menu_profile">Profile</string>
 </resources>
