@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.hannesdorfmann.adapterdelegates3.AdapterDelegate;
 import com.shakeup.tweetnest.R;
+import com.shakeup.tweetnest.commons.Utils;
 import com.shakeup.tweetnest.commons.models.Tweet;
 import com.shakeup.tweetnest.commons.models.User;
 import com.shakeup.tweetnest.features.profile.ProfileActivity;
@@ -28,30 +29,30 @@ import butterknife.ButterKnife;
  * Created by Jayson on 9/27/2017.
  * <p>
  * Adpter delegate used by the {@link TweetAdapter} to
- * display {@link com.shakeup.tweetnest.commons.models.Tweet}s
+ * display {@link User}s
  */
 
 
-public class TweetAdapterDelegate extends AdapterDelegate<List<Tweet>> {
+public class ProfileAdapterDelegate extends AdapterDelegate<List<Tweet>> {
 
     private final String TAG = this.getClass().getSimpleName();
 
     private LayoutInflater mInflater;
 
-    public TweetAdapterDelegate(Activity activity) {
+    public ProfileAdapterDelegate(Activity activity) {
         this.mInflater = activity.getLayoutInflater();
     }
 
     @Override
     protected boolean isForViewType(@NonNull List<Tweet> items, int position) {
-        return (items.get(position).text != null);
+        return (position == 0) && items.get(0).text == null;
     }
 
     @NonNull
     @Override
     protected RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent) {
-        return new TweetViewHolder(
-                mInflater.inflate(R.layout.listietm_tweet, parent, false));
+        return new ProfileViewHolder(
+                mInflater.inflate(R.layout.listitem_profile_header, parent, false));
     }
 
     @Override
@@ -60,11 +61,11 @@ public class TweetAdapterDelegate extends AdapterDelegate<List<Tweet>> {
             int position,
             @NonNull RecyclerView.ViewHolder holder,
             @NonNull List<Object> payloads) {
-        TweetViewHolder viewHolder = (TweetViewHolder) holder;
+        ProfileViewHolder viewHolder = (ProfileViewHolder) holder;
         viewHolder.bind(items.get(position), position);
     }
 
-    public class TweetViewHolder extends RecyclerView.ViewHolder {
+    public class ProfileViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         @BindView(R.id.image_avatar)
         public ImageView avatar;
@@ -72,12 +73,14 @@ public class TweetAdapterDelegate extends AdapterDelegate<List<Tweet>> {
         public TextView username;
         @BindView(R.id.text_handle)
         public TextView handle;
-        @BindView(R.id.text_time_posted)
-        public TextView timePosted;
-        @BindView(R.id.text_body)
-        public TextView body;
+        @BindView(R.id.text_tagline)
+        public TextView tagline;
+        @BindView(R.id.text_followers)
+        public TextView followers;
+        @BindView(R.id.text_following)
+        public TextView following;
 
-        public TweetViewHolder(View view) {
+        public ProfileViewHolder(View view) {
             super(view);
             this.mView = view;
             ButterKnife.bind(this, view);
@@ -88,8 +91,11 @@ public class TweetAdapterDelegate extends AdapterDelegate<List<Tweet>> {
             username.setText(tweet.user.name);
             String strHandle = String.format(Locale.getDefault(), "@%s", tweet.user.screenName);
             handle.setText(strHandle);
-            timePosted.setText(String.format("- %s", tweet.getCreatedAtRelative()));
-            body.setText(tweet.text);
+            tagline.setText(tweet.user.description);
+            String sFollowers = Utils.getCompactNumber(tweet.user.followersCount) + " Followers";
+            followers.setText(sFollowers);
+            String sFollowing = Utils.getCompactNumber(tweet.user.friendsCount) + " Following";
+            following.setText(sFollowing);
 
             Glide.with(itemView.getContext())
                     .load(tweet.user.getProfileImageUrlHttpsOriginal())

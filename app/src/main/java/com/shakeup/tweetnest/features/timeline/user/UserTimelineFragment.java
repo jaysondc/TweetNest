@@ -82,6 +82,9 @@ public class UserTimelineFragment extends Fragment {
             }
         });
 
+        // Add our user profile to the top of the timeline
+        tweetAdapter.appendProfile(mUserTimelineViewModel.getUser());
+
         // Load the initial timeline and listen for further changes
         mUserTimelineViewModel.getTimeline().observe(this, tweets -> {
             tweetAdapter.appendTweets(tweets);

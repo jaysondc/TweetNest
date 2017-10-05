@@ -32,4 +32,25 @@ public class Utils {
         return relativeDate;
     }
 
+    public static String getCompactNumber(long num) {
+        if (num < 1000) return Long.toString(num);
+
+        double temp = num;
+        while (temp > 1000) {
+            temp = temp / 1000;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format(Locale.getDefault(), "%.1f", temp));
+        if (num < 1000000) {
+            sb.append("K");
+        } else if (num < 1000000000) {
+            sb.append("M");
+        } else if (num < 1000000000000L) {
+            sb.append("B");
+        }
+
+        return sb.toString();
+    }
+
 }
