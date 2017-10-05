@@ -5,19 +5,37 @@
     android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/profile_app_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:contentScrim="?attr/colorPrimary"
+        android:layout_height="150dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_profile"
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/profile_collapsing_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@color/colorPrimary"
-            android:fitsSystemWindows="true"
-            android:titleTextColor="@color/primaryTextColorInverse"
-            app:layout_scrollFlags="scroll|enterAlways" />
+            android:layout_height="match_parent"
+            app:contentScrim="@color/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <ImageView
+                android:id="@+id/image_profile_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/bg_test"
+                app:layout_collapseMode="parallax"
+                app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed" />
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar_profile"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:fitsSystemWindows="true"
+                android:titleTextColor="@color/primaryTextColorInverse" />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
     </android.support.design.widget.AppBarLayout>
 
     <FrameLayout

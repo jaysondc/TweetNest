@@ -2,6 +2,8 @@ package com.shakeup.tweetnest.features.profile;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +29,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar_profile)
     public Toolbar mToolbar;
+    @BindView(R.id.profile_app_bar)
+    public AppBarLayout mAppBarLayout;
+    @BindView(R.id.profile_collapsing_toolbar)
+    public CollapsingToolbarLayout mCollapsingToolbarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +53,27 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void initToolbar() {
-        mToolbar.setTitle("User Timeline!");
+        mToolbar.setTitle(" ");
         this.setSupportActionBar(mToolbar);
+
+        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isShow = false;
+            int scrollRange = -1;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+                if (scrollRange + verticalOffset == 0) {
+                    mCollapsingToolbarLayout.setTitle(mProfileViewModel.getUser().screenName);
+                    isShow = true;
+                } else if(isShow) {
+                    mCollapsingToolbarLayout.setTitle(" ");//careful there should a space between double quote otherwise it wont work
+                    isShow = false;
+                }
+            }
+        });
     }
 
     private void initFragment() {
